@@ -9,7 +9,7 @@ from utils import pt_in_line_w_tol
 from ocr.processor import processor
 
 
-canvas = np.full((640, 640, 3), 255, np.uint8)
+canvas = np.full((480, 480, 1), 255, np.uint8)
 
 drawing = False
 erasing = False
@@ -36,7 +36,7 @@ def draw(event, x, y, flags, param):
 
         canvas[:] = 255
         for line in lines:
-            cv2.line(canvas, line[0], line[1], (0, 0, 0), 5, cv2.LINE_AA)
+            cv2.line(canvas, line[0], line[1], 0, 5, cv2.LINE_AA)
     if erasing:
         idx_to_del = []
         for i in range(len(lines)):
@@ -47,14 +47,15 @@ def draw(event, x, y, flags, param):
 
         canvas[:] = 255
         for line in lines:
-            cv2.line(canvas, line[0], line[1], (0, 0, 0), 5, cv2.LINE_AA)
+            cv2.line(canvas, line[0], line[1], 0, 5, cv2.LINE_AA)
 
 
-cv2.namedWindow("canvas", cv2.WINDOW_GUI_NORMAL | cv2.WINDOW_AUTOSIZE)
-cv2.setMouseCallback("canvas", draw)
+window_name = "canvas"
 ocr_processor = processor()
+cv2.namedWindow(window_name, cv2.WINDOW_GUI_NORMAL | cv2.WINDOW_AUTOSIZE)
+cv2.setMouseCallback(window_name, draw)
 while True:
-    cv2.imshow("canvas", canvas)
+    cv2.imshow(window_name, canvas)
     symbol = ocr_processor.process(canvas)
     if symbol:
         print(symbol)

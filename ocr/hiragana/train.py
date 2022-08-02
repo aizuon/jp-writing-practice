@@ -10,11 +10,11 @@ test_labels = np.load("./data/hiragana_test_labels.npz")["arr_0"]
 
 if K.image_data_format() == "channels_first":
     train_images = train_images.reshape(train_images.shape[0], 1, 48, 48)
-    test_images2 = test_images.reshape(test_images.shape[0], 1, 48, 48)
+    test_images = test_images.reshape(test_images.shape[0], 1, 48, 48)
     shape = (1, 48, 48)
 else:
     train_images = train_images.reshape(train_images.shape[0], 48, 48, 1)
-    test_images2 = test_images.reshape(test_images.shape[0], 48, 48, 1)
+    test_images = test_images.reshape(test_images.shape[0], 48, 48, 1)
     shape = (48, 48, 1)
 
 datagen = ImageDataGenerator(rotation_range=15, zoom_range=0.2)
@@ -44,14 +44,14 @@ model.compile(
 model.fit(
     datagen.flow(train_images, train_labels, shuffle=True),
     epochs=30,
-    validation_data=(test_images2, test_labels),
+    validation_data=(test_images, test_labels),
     callbacks=[
         keras.callbacks.EarlyStopping(patience=8, verbose=1, restore_best_weights=True),
         keras.callbacks.ReduceLROnPlateau(factor=0.5, patience=3, verbose=1),
     ],
 )
 
-test_loss, test_acc = model.evaluate(test_images2, test_labels)
+test_loss, test_acc = model.evaluate(test_images, test_labels)
 print(f"Test Accuracy: {test_acc}")
 
 model.save("./model/hiragana.h5")
