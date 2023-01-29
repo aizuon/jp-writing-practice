@@ -1,9 +1,9 @@
 import cv2
 import numpy as np
 
-from numba import config
+# from numba import config
 
-config.THREADING_LAYER = "tbb"
+# config.THREADING_LAYER = "tbb"
 
 from utils import pt_in_line_w_tol
 from ocr.processor import processor

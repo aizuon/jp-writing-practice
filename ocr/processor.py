@@ -45,7 +45,7 @@ class processor:
         (x, y, w, h) = cv2.boundingRect(cnt)
 
         roi = canvas[y : y + h, x : x + w]
-        thresh = cv2.threshold(roi, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+        thresh = cv2.threshold(roi, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
         (tH, tW) = thresh.shape
 
         if tW > tH:
@@ -64,7 +64,7 @@ class processor:
             left=dX,
             right=dX,
             borderType=cv2.BORDER_CONSTANT,
-            value=(255, 255, 255),
+            value=(0, 0, 0),
         )
         padded = cv2.resize(padded, (48, 48))
 
